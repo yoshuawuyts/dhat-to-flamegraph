@@ -34,10 +34,27 @@ fn default_output() -> PathBuf {
 
 type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
 
-pub fn main() -> Result<(), Error> {
+fn main() -> Result<(), Error> {
     let Args { input, output } = Args::parse();
     let file = fs::File::open(input)?;
-    let dhat: dhat::DhatJson = serde_json::from_reader(file)?;
-    println!("{dhat:#?}");
+    let dhat: dhat::Dhat = serde_json::from_reader(file)?;
+    let lines = dhat
+        .program_points
+        .iter()
+        .map(|program_point| {
+            let trace = program_point
+                .frames
+                .iter()
+                .map(|frame_idx| dhat.frame_table[*frame_idx].clone())
+                .collect::<Vec<_>>();
+            folded::Trace {
+                trace,
+                frequency: program_point.total_bytes,
+            }
+        })
+        .collect::<Vec<_>>();
+    let folded = folded::Folded { lines };
+    fs::write(&output, folded.to_string())?;
+    println!("wrote to {output:?}");
     Ok(())
 }

@@ -3,13 +3,13 @@ use std::fmt::Display;
 
 /// A folded stacktrace
 #[derive(Debug)]
-pub struct Folded {
-    lines: Vec<Trace>,
+pub(crate) struct Folded {
+    pub(crate) lines: Vec<Trace>,
 }
 impl Display for Folded {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for line in &self.lines {
-            write!(f, "{line}")?;
+            writeln!(f, "{line}")?;
         }
         Ok(())
     }
@@ -17,9 +17,9 @@ impl Display for Folded {
 
 /// A stack trace and a frequency
 #[derive(Debug)]
-pub struct Trace {
-    trace: Vec<String>,
-    frequency: u64,
+pub(crate) struct Trace {
+    pub(crate) trace: Vec<String>,
+    pub(crate) frequency: u64,
 }
 
 impl Display for Trace {
