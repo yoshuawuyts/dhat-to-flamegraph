@@ -46,6 +46,19 @@
 $ cargo add dhat-to-flamegraph
 ```
 
+## Usage
+
+```text
+Usage: dhat-to-flamegraph <INPUT> [OUTPUT]
+
+Arguments:
+  <INPUT>   The dhat JSON file
+  [OUTPUT]  Where to write the output file [default: dhat.folded]
+
+Options:
+  -h, --help  Print help
+```
+
 ## Safety
 This crate uses ``#![deny(unsafe_code)]`` to ensure everything is implemented in
 100% Safe Rust.

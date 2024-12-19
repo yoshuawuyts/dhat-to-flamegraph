@@ -1,9 +1,16 @@
 //! Convert dhat JSON output to a collapsed flamegraph format
 //!
-//! # Examples
+//! ## Usage
 //!
-//! ```
-//! // tbi
+//! ```text
+//! Usage: dhat-to-flamegraph <INPUT> [OUTPUT]
+//!
+//! Arguments:
+//!   <INPUT>   The dhat JSON file
+//!   [OUTPUT]  Where to write the output file [default: dhat.folded]
+//!
+//! Options:
+//!   -h, --help  Print help
 //! ```
 
 #![forbid(unsafe_code)]
