@@ -1,0 +1,20 @@
+[package]
+name = "dhat-to-flamegraph"
+version = "1.0.0"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/yoshuawuyts/dhat-to-flamegraph"
+documentation = "https://docs.rs/dhat-to-flamegraph"
+description = "Convert dhat JSON output to a collapsed flamegraph format"
+readme = "README.md"
+edition = "2018"
+keywords = []
+categories = []
+authors = [
+    "Yoshua Wuyts <rust@yosh.is>"
+]
+
+[features]
+
+[dependencies]
+
+[dev-dependencies]
