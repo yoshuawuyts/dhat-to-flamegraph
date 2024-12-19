@@ -43,7 +43,7 @@
 
 ## Installation
 ```sh
-$ cargo add dhat-to-flamegraph
+$ cargo install dhat-to-flamegraph
 ```
 
 ## Usage
