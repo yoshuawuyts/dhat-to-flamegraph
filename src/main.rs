@@ -24,6 +24,19 @@
 //!           - svg:    Format as svg (default)
 //!           - folded: Format as folded stack traces
 //!
+//!   -m, --metric <METRIC>
+//!           Possible values:
+//!           - total:    Measure all traces, output total memory usage per trace (default)
+//!           - max:      Measure all traces, output max memory usage per trace
+//!           - end:      Measure only the remaining traces at program end, useful to find leaks
+//!           - heap-max: Measure only the traces at max heap usage, useful to find spikes
+//!
+//!   -u, --unit <UNIT>
+//!           Possible values:
+//!           - bytes:     Measure allocations in bytes (default)
+//!           - blocks:    Measure allocations in blocks, useful to find allocation counts
+//!           - lifetimes: Measure allocations in lifetimes, useful to find short-lived allocations
+//!
 //!   -h, --help
 //!           Print help (see a summary with '-h')
 //! ```
@@ -42,15 +55,18 @@
 use clap::Parser;
 use folded::Folded;
 use inferno::flamegraph;
+use metric::Metric;
 use std::{
     fs::{self, File},
     io::{Stdout, Write},
     path::PathBuf,
-    str::FromStr,
 };
+use unit::Unit;
 
 mod dhat;
 mod folded;
+mod metric;
+mod unit;
 
 /// Convert dhat JSON output to a flamegraph
 #[derive(Parser)]
@@ -65,6 +81,10 @@ struct Args {
     /// Which output format to use
     #[clap(short, long)]
     format: Option<Format>,
+    #[clap(short, long)]
+    metric: Option<Metric>,
+    #[clap(short, long)]
+    unit: Option<Unit>,
 }
 
 #[derive(clap::ValueEnum, Clone, Copy, Default)]
@@ -76,18 +96,6 @@ enum Format {
     Folded,
 }
 
-impl FromStr for Format {
-    type Err = Error;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "svg" => Ok(Self::Svg),
-            "folded" => Ok(Self::Folded),
-            s => Err(s.into()),
-        }
-    }
-}
-
 type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
 
 fn main() -> Result<(), Error> {
@@ -95,12 +103,16 @@ fn main() -> Result<(), Error> {
         input,
         output,
         format,
+        metric,
+        unit,
     } = Args::parse();
     let file = fs::File::open(input)?;
 
     // Convert dhat to lines
     let dhat: dhat::Dhat = serde_json::from_reader(file)?;
-    let folded = Folded::from_dhat(dhat).to_string();
+    let metric = metric.unwrap_or_default();
+    let unit = unit.unwrap_or_default();
+    let folded = Folded::from_dhat(dhat, metric, unit).to_string();
 
     // Determine where to write the data to
     let mut writer = match &output {
