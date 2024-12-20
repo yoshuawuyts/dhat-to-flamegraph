@@ -3,14 +3,36 @@
 //! ## Usage
 //!
 //! ```text
-//! Usage: dhat-to-flamegraph <INPUT> [OUTPUT]
+//! Convert dhat JSON output to a flamegraph
+//!
+//! Usage: dhat-to-flamegraph [OPTIONS] <INPUT>
 //!
 //! Arguments:
-//!   <INPUT>   The dhat JSON file
-//!   [OUTPUT]  Where to write the output file [default: dhat.folded]
+//!   <INPUT>
+//!           The dhat JSON file to process
 //!
 //! Options:
-//!   -h, --help  Print help
+//!   -o, --output <OUTPUT>
+//!           Where to place the output
+//!           
+//!           If not provided then stdout is used.
+//!
+//!   -f, --format <FORMAT>
+//!           Which output format to use
+//!
+//!           Possible values:
+//!           - svg:    Format as svg (default)
+//!           - folded: Format as folded stack traces
+//!
+//!   -h, --help
+//!           Print help (see a summary with '-h')
+//! ```
+//!
+//! Usage example:
+//!
+//! ```bash
+//! dhat-to-flamegraph fixtures/dhat-heap.json > out.svg
+//! open out.svg
 //! ```
 
 #![forbid(unsafe_code)]
