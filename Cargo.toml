@@ -1,6 +1,6 @@
 [package]
 name = "dhat-to-flamegraph"
-version = "2.0.0"
+version = "2.1.0"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/yoshuawuyts/dhat-to-flamegraph"
 documentation = "https://docs.rs/dhat-to-flamegraph"
