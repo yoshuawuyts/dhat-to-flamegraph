@@ -41,6 +41,18 @@
   </h3>
 </div>
 
+## About
+
+[DHAT] is a dynamic heap analysis tool.
+It is part of the [Valgrind](https://valgrind.org/) instrumentation framework.
+[dhat-rs] provides a similar implementation for direct integration with Rust.
+Both tools produce JSON output, describing the tracked heap allocations.
+DHAT provides a web-based tool to view the generated data.
+
+`dhat-to-flamegraph` converts this JSON data into a flamegraph.
+
+[dhat]: https://www.valgrind.org/docs/manual/dh-manual.html
+
 ## Installation
 ```sh
 $ cargo install dhat-to-flamegraph
@@ -96,7 +108,9 @@ open out.svg
 
 ## See Also
 
-- [nnethercote/dhat-rs](https://github.com/nnethercote/dhat-rs)
+- [nnethercote/dhat-rs][dhat-rs]
+
+[dhat-rs]: https://github.com/nnethercote/dhat-rs
 
 ## Safety
 This crate uses ``#![deny(unsafe_code)]`` to ensure everything is implemented in
