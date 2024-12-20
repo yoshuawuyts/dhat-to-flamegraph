@@ -70,6 +70,19 @@ Options:
           - svg:    Format as svg (default)
           - folded: Format as folded stack traces
 
+  -m, --metric <METRIC>
+          Possible values:
+          - total:    Measure all traces, output total memory usage per trace (default)
+          - max:      Measure all traces, output max memory usage per trace
+          - end:      Measure only the remaining traces at program end, useful to find leaks
+          - heap-max: Measure only the traces at max heap usage, useful to find spikes
+
+  -u, --unit <UNIT>
+          Possible values:
+          - bytes:     Measure allocations in bytes (default)
+          - blocks:    Measure allocations in blocks, useful to find allocation counts
+          - lifetimes: Measure allocations in lifetimes, useful to find short-lived allocations
+
   -h, --help
           Print help (see a summary with '-h')
 ```

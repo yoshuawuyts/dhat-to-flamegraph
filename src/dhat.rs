@@ -21,7 +21,7 @@ pub(crate) struct Dhat {
     /// Are block lifetimes recorded? Affects whether some other fields are
     /// present. A mandatory boolean.
     pub(crate) bklt: bool,
-    /// Are block lifetimes recorded? Affects whether some other fields are
+    /// Are block accesses recorded? Affects whether some other fields are
     /// present. A mandatory boolean.
     pub(crate) bkacc: bool,
     /// Byte/bytes/blocks-position units. Optional strings. "byte", "bytes",
@@ -66,32 +66,38 @@ pub(crate) struct ProgramPoint {
     /// Total bytes and blocks. Mandatory integers.
     #[serde(rename = "tb")]
     pub(crate) total_bytes: u64,
-    pub(crate) tbk: u64,
+    #[serde(rename = "tbk")]
+    pub(crate) total_blocks: u64,
 
     /// Total lifetimes of all blocks allocated at this PP.
     /// - bklt=true: a mandatory integer.
     /// - bklt=false: omitted.
     // Derived from `PpInfo::total_lifetimes_duration`.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) tl: Option<u128>,
+    #[serde(rename = "tl")]
+    pub(crate) total_lifetimes: Option<u128>,
 
     /// The maximum bytes and blocks for this PP.
     /// - bklt=true: mandatory integers.
     /// - bklt=false: omitted.
     // `PpInfo::max_bytes` and `PpInfo::max_blocks`.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) mb: Option<usize>,
+    #[serde(rename = "mb")]
+    pub(crate) max_bytes: Option<usize>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) mbk: Option<usize>,
+    #[serde(rename = "mbk")]
+    pub(crate) max_blocks: Option<usize>,
 
     /// The bytes and blocks at t-gmax for this PP.
     /// - bklt=true: mandatory integers.
     /// - bklt=false: omitted.
     // `PpInfo::at_tgmax_bytes` and `PpInfo::at_tgmax_blocks`.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) gb: Option<usize>,
+    #[serde(rename = "gb")]
+    pub(crate) heap_max_bytes: Option<usize>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) gbk: Option<usize>,
+    #[serde(rename = "gbk")]
+    pub(crate) heap_max_blocks: Option<usize>,
 
     /// The bytes and blocks at t-end for this PP.
     /// - bklt=true: mandatory integers.
@@ -99,9 +105,11 @@ pub(crate) struct ProgramPoint {
     // `PpInfo::curr_bytes` and `PpInfo::curr_blocks` (at termination, i.e.
     // "end").
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) eb: Option<usize>,
+    #[serde(rename = "eb")]
+    pub(crate) end_bytes: Option<usize>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) ebk: Option<usize>,
+    #[serde(rename = "ebk")]
+    pub(crate) end_blocks: Option<usize>,
 
     // Frames. Each element is an index into `ftbl`.
     #[serde(rename = "fs")]
