@@ -14,7 +14,7 @@
 //! Options:
 //!   -o, --output <OUTPUT>
 //!           Where to place the output
-//!           
+//!
 //!           If not provided then stdout is used.
 //!
 //!   -f, --format <FORMAT>
@@ -44,7 +44,7 @@ use folded::Folded;
 use inferno::flamegraph;
 use std::{
     fs::{self, File},
-    io::{Stdout, Write},
+    io::Write,
     path::PathBuf,
     str::FromStr,
 };
@@ -103,9 +103,9 @@ fn main() -> Result<(), Error> {
     let folded = Folded::from_dhat(dhat).to_string();
 
     // Determine where to write the data to
-    let mut writer = match &output {
-        Some(output) => Writer::File(File::create(&output)?),
-        None => Writer::Stdout(std::io::stdout()),
+    let writer = match &output {
+        Some(output) => &mut File::create(&output)? as &mut dyn Write,
+        None => &mut std::io::stdout(),
     };
 
     // Write the data
@@ -120,25 +120,4 @@ fn main() -> Result<(), Error> {
         eprintln!("wrote {output:?}");
     }
     Ok(())
-}
-
-enum Writer {
-    File(File),
-    Stdout(Stdout),
-}
-
-impl Write for Writer {
-    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
-        match self {
-            Writer::File(file) => file.write(buf),
-            Writer::Stdout(stdout) => stdout.write(buf),
-        }
-    }
-
-    fn flush(&mut self) -> std::io::Result<()> {
-        match self {
-            Writer::File(file) => file.flush(),
-            Writer::Stdout(stdout) => stdout.flush(),
-        }
-    }
 }
