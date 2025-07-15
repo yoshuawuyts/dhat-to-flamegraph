@@ -29,9 +29,9 @@ impl Folded {
                         assert!(dhat.bklt, "lifetimes were not recorded in the dhat profile, cannot compute `max` metric")
                     }
                     Metric::Total => {}
-                    Metric::End => 
+                    Metric::End =>
                         assert!(dhat.bklt, "lifetimes were not recorded in the dhat profile, cannot compute `end` metric"),
-                    Metric::HeapMax => 
+                    Metric::HeapMax =>
                         assert!(dhat.bklt, "lifetimes were not recorded in the dhat profile, cannot compute `heap max` metric"),
                 }
 
